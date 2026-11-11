@@ -9,21 +9,22 @@ Presentación de bienvenida para el inicio de las clases, con actividades que lo
 
 | Slide | Actividad |
 |---|---|
-| 16 | **Nuvem de desejos:** cada alumno envía hasta 3 palabras en portugués; la nube crece. Después, «Formar frases»: los alumnos escriben frases con las palabras de la nube. |
-| 17 | **Verdadeiro ou falso:** 20 datos sobre Brasil, con votos, explicación y ranking final. |
+| 17 | **Nuvem de desejos:** cada alumno envía hasta 3 palabras en portugués; la nube crece. Después, «Formar frases»: los alumnos escriben frases con las palabras de la nube. |
+| 18 | **Verdadeiro ou falso:** 20 datos sobre Brasil, con votos, explicación y ranking final. |
 
 ## Otras actividades (en la pantalla)
 
 | Slide | Actividad |
 |---|---|
-| 18 | **Jogo da memória:** fotos y nombres de brasileños famosos. Por turnos, cada alumno elige dos cartas en el celular por coordenada (A1…F3) y su nombre aparece en la pantalla. |
-| 19 | **¿Gringa o brasileña?:** tarjetas que se dan vuelta con canciones que parecen extranjeras y tienen raíces brasileñas. |
+| 4 | **¡Pregúntales a los profes!:** 12 preguntas en portugués para Carol, Marcos y Kaiena, con sorteo. |
+| 19 | **Jogo da memória:** fotos y nombres de brasileños famosos. Por turnos, cada alumno elige dos cartas en el celular por coordenada (A1…F3) y su nombre aparece en la pantalla. |
+| 20 | **¿Gringa o brasileña?:** tarjetas que se dan vuelta con canciones que parecen extranjeras y tienen raíces brasileñas, con vista previa de 30 s de Apple Music en la misma página. |
 
 Fotos del juego: Wikimedia Commons, con autor y licencia en el botón «© Fotos» y en `img/credits.json`.
 
 ## Cómo funciona
 
-- Al abrir la presentación se crea una sala con un código de 5 letras. El QR de los slides 16 y 17 lleva a `aluno.html?s=CÓDIGO`.
+- Al abrir la presentación se crea una sala con un código de 5 letras. El QR de los slides 17 y 18 lleva a `aluno.html?s=CÓDIGO`.
 - La conexión es directa entre el celular y el navegador del profesor (WebRTC con PeerJS). No hay servidor ni base de datos: las palabras y respuestas quedan solo en el navegador del profesor (localStorage).
 - Si la presentación se abre desde un archivo local, el QR apunta igual a la página publicada en GitHub Pages.
 - Si un celular no logra conectarse, el profesor puede escribir palabras o frases en «Añadir desde aquí…».
