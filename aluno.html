@@ -52,6 +52,16 @@ button.chip{cursor:pointer;background:#E3F4EA;color:var(--dark);border:2px solid
 .score{display:inline-block;margin-top:12px;font-weight:800;background:var(--dark);color:var(--gold);padding:6px 14px;border-radius:999px}
 .who{font-size:14px;color:var(--muted);text-align:center;margin-top:18px}
 .who a{color:var(--green)}
+.mg{display:grid;grid-template-columns:22px repeat(6,1fr);gap:6px;margin-top:14px;align-items:center}
+.mg span{font:700 15px Rubik,Arial,sans-serif;color:var(--green);text-align:center}
+.mg button{aspect-ratio:1;border-radius:12px;border:0;background:var(--green);color:#fff;font:700 17px Rubik,Arial,sans-serif;box-shadow:0 3px 0 var(--dark);cursor:pointer}
+.mg button:disabled{box-shadow:none}
+.mg button.o{background:var(--gold);color:#14261E}
+.mg button.d{background:var(--line);color:var(--muted)}
+.mg.wait button.h{background:#9DBFAE;box-shadow:none}
+.turn{border-radius:12px;padding:12px 14px;font-weight:800;font-size:18px;text-align:center}
+.turn.me{background:var(--gold);color:#14261E;animation:pop .5s cubic-bezier(.2,1.5,.4,1)}
+.turn.other{background:#E3F4EA;color:var(--green)}
 .ch{background:var(--gold);color:#14261E;border-radius:12px;padding:10px 14px;font-weight:700;margin-bottom:12px}
 </style>
 </head>
@@ -116,7 +126,7 @@ function keep(id) { const e = $(id); return e ? e.value : ""; }
 function render(force) {
   if (!joined) return screenJoin();
   const a = act || { kind: "wait" };
-  const key = JSON.stringify([a.kind, a.i, a.challenge]);
+  const key = JSON.stringify([a.kind, a.i, a.challenge, a.kind === "memory" ? a.cells : 0]);
   const sameScreen = key === lastKey && !force; lastKey = key;
   const draft = keep("w") || keep("s"), focus = document.activeElement && document.activeElement.id;
   const who = `<p class="who">Participas como <b>${esc(name)}</b> · <a href="#" id="chg">cambiar</a></p>`;
@@ -150,6 +160,16 @@ function render(force) {
       <p class="res" style="color:${a.ok ? "var(--green)" : "var(--red)"}">${a.ok ? "✅ Verdadeiro" : "❌ Falso"}</p>
       ${a.mine === null || a.mine === undefined ? `<p class="msg bad">No respondiste este dato.</p>` : right ? `<p class="msg ok">🎉 ¡Acertaste!</p>` : `<p class="msg bad">Esta vez no. ¡Sigue!</p>`}
       <p class="exp" style="text-align:left">${esc(a.exp)}</p><span class="score">⭐ ${a.score} ${a.score === 1 ? "acierto" : "aciertos"}</span></div>`;
+  } else if (a.kind === "memory") {
+    const L = "ABCDEF", rows = Math.ceil(a.cells.length / a.cols);
+    let g = `<span></span>` + [...Array(a.cols)].map((_, c) => `<span>${L[c]}</span>`).join("");
+    for (let r = 0; r < rows; r++) { g += `<span>${r + 1}</span>`; for (let c = 0; c < a.cols; c++) { const i = r * a.cols + c, s = a.cells[i];
+      g += `<button class="${s}" data-m="${i}" ${s !== "h" || !a.mine || a.over ? "disabled" : ""}>${s === "d" ? "✓" : s === "o" ? "👀" : L[c] + (r + 1)}</button>`; } }
+    h = `<div class="card"><div class="label">🧠 Jogo da memória</div>
+      ${a.over ? `<p class="turn me">¡Terminamos! Encontraste ${a.pts} ${a.pts === 1 ? "par" : "pares"}. 🎉</p>`
+        : a.mine ? `<p class="turn me">¡Es tu turno, ${esc(name)}! Elige 2 cartas.</p>` : `<p class="turn other">Turno de <b>${esc(a.turn || "…")}</b>. ¡Mira la pantalla!</p>`}
+      <div class="mg ${a.mine ? "" : "wait"}">${g}</div>
+      <p class="lead" style="margin:12px 0 0;font-size:15px">⭐ Tus pares: <b>${a.pts}</b> · 👀 = carta abierta · ✓ = par encontrado</p></div>`;
   } else if (a.kind === "rank") {
     const medal = ["🥇", "🥈", "🥉"][a.pos - 1] || "🏁";
     h = `<div class="card center"><p class="big">${medal}</p><h1>¡Terminamos!</h1><p class="lead">Acertaste <b>${a.score} de ${a.n}</b> datos sobre Brasil${a.pos ? ` · puesto ${a.pos}` : ""}.</p><p class="msg ok">Parabéns, ${esc(name)}! 🇧🇷</p></div>`;
@@ -167,6 +187,7 @@ function render(force) {
     app.querySelectorAll("[data-w]").forEach(b => b.onclick = () => { const t = $("s"); t.value = (t.value.trim() + " " + b.dataset.w).trim(); t.focus(); });
     $("send").onclick = () => { const s = $("s").value.trim(); if (!s) return; if (send({ t: "sentence", s })) { sentList.push(s); $("s").value = ""; lastKey = ""; render(); } };
   }
+  if (a.kind === "memory") app.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { b.disabled = true; send({ t: "mem", i: +b.dataset.m }); });
   if (a.kind === "tf") app.querySelectorAll("[data-v]").forEach(b => b.onclick = () => { send({ t: "answer", i: a.i, v: b.dataset.v === "1" }); });
 }
 if (name && code) { joined = true; connect(); }

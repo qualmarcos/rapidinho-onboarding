@@ -16,7 +16,7 @@ Presentación de bienvenida para el inicio de las clases, con actividades que lo
 
 | Slide | Actividad |
 |---|---|
-| 18 | **Jogo da memória:** fotos y nombres de brasileños famosos, en dos equipos. |
+| 18 | **Jogo da memória:** fotos y nombres de brasileños famosos. Por turnos, cada alumno elige dos cartas en el celular por coordenada (A1…F3) y su nombre aparece en la pantalla. |
 | 19 | **¿Gringa o brasileña?:** tarjetas que se dan vuelta con canciones que parecen extranjeras y tienen raíces brasileñas. |
 
 Fotos del juego: Wikimedia Commons, con autor y licencia en el botón «© Fotos» y en `img/credits.json`.
